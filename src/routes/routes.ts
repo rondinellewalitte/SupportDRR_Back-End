@@ -17,12 +17,21 @@ routes.get(
       }
     );
 
-    const object = data.aaData.map((data) => {
-      const dados = { nome: data[0], grupo: data[1], curso: data[3] };
-      return console.log(data);
+    const supports = data.aaData.map((support) => {
+      const supports = {
+        name: support[0],
+        course: support[1],
+        classroom: support[3],
+        date_support: support[4],
+        status: support[6],
+        id_response: support[7],
+        id_user: support[8],
+        support: support[11],
+      };
+      return supports;
     });
 
-    return res.status(200).json(data.aaData[1]);
+    return res.status(200).json(supports);
   }
 );
 
