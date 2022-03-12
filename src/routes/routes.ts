@@ -11,12 +11,18 @@ routes.get(
       "https://drraulaboa.com.br/plataforma/support/index.php?action=commentPaginate&origin=adm",
       {
         headers: {
+          "Access-Control-Allow-Origin": "*",
           Cookie: "PHPSESSID=e5rmeo6c5sclbl2slsbegb1220;",
         },
       }
     );
 
-    return res.status(200).json(data.aaData);
+    const object = data.aaData.map((data) => {
+      const dados = { nome: data[0], grupo: data[1], curso: data[3] };
+      return console.log(data);
+    });
+
+    return res.status(200).json(data.aaData[1]);
   }
 );
 
