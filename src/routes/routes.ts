@@ -33,19 +33,20 @@ routes.get(
       return supports;
     });
 
+    /*
     const result = supports.filter((dados) => {
       return dados.status === "1";
     });
+    */
 
-    return res.status(200).json(result);
+    return res.status(200).json(supports);
   }
 );
 
 routes.get("/finish", async (req: Request, res: Response) => {
-  const { id } = req.headers;
-
+  const { id_response } = req.headers;
   const respost = await axios.get(
-    `https://drraulaboa.com.br/support/EndTicket/adm/${id}/`,
+    `https://drraulaboa.com.br/support/EndTicket/adm/${id_response}/`,
     {
       headers: {
         Cookie: "PHPSESSID=e5rmeo6c5sclbl2slsbegb1220;",
@@ -53,9 +54,7 @@ routes.get("/finish", async (req: Request, res: Response) => {
     }
   );
 
-  console.log(respost.status);
-
-  return res.status(200).json({ message: "OK" });
+  return res.sendStatus(respost.status);
 });
 
 export { routes };
