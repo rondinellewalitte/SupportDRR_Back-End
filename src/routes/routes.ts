@@ -1,6 +1,7 @@
-import axios from "axios";
 import { Router, Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
+
+import { api } from "../services/api";
 
 const routes = Router();
 
@@ -8,14 +9,8 @@ routes.get(
   "/",
 
   async (req: Request, res: Response) => {
-    const { data } = await axios.get(
-      "https://drraulaboa.com.br/plataforma/support/index.php?action=commentPaginate&origin=adm",
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Cookie: "PHPSESSID=e5rmeo6c5sclbl2slsbegb1220;",
-        },
-      }
+    const { data } = await api.get(
+      "/plataforma/support/index.php?action=commentPaginate&origin=adm"
     );
 
     const supports = data.aaData.map((support) => {
@@ -32,28 +27,13 @@ routes.get(
       };
       return supports;
     });
-
-    /*
-    const result = supports.filter((dados) => {
-      return dados.status === "1";
-    });
-    */
-
     return res.status(200).json(supports);
   }
 );
 
 routes.get("/finish", async (req: Request, res: Response) => {
   const { id_response } = req.headers;
-  const respost = await axios.get(
-    `https://drraulaboa.com.br/support/EndTicket/adm/${id_response}/`,
-    {
-      headers: {
-        Cookie: "PHPSESSID=e5rmeo6c5sclbl2slsbegb1220;",
-      },
-    }
-  );
-
+  const respost = await api.get(`support/EndTicket/adm/${id_response}/`);
   return res.sendStatus(respost.status);
 });
 
