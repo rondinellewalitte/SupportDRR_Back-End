@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Router, Request, Response } from "express";
+import { v4 as uuidv4 } from "uuid";
 
 const routes = Router();
 
@@ -19,19 +20,24 @@ routes.get(
 
     const supports = data.aaData.map((support) => {
       const supports = {
+        id: uuidv4(),
         name: support[0],
         course: support[1],
-        classroom: support[3],
-        date_support: support[4],
-        status: support[6],
-        id_response: support[7],
-        id_user: support[8],
+        classroom: support[2],
+        date_support: support[3],
+        status: support[5],
+        id_response: support[6],
+        id_user: support[7],
         support: support[11],
       };
       return supports;
     });
 
-    return res.status(200).json(supports);
+    const result = supports.filter((dados) => {
+      return dados.status === "1";
+    });
+
+    return res.status(200).json(result);
   }
 );
 
